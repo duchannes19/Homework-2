@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1705069846 "c:/Users/andri/Documents/Università/Machine Learning/Homework-2/report.tex" "report.pdf" "report" 1705069847 0
-  "C:/Users/andri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1701446900 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
-  "C:/Users/andri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1700487915 11548 dd9d2ab9f25b0dcc6d89ce3ab3464b70 ""
-  "C:/Users/andri/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1700477545 24213240 87c2ca2edf317fad5585e8d28b371cc1 ""
+["pdflatex"] 1705096759 "c:/Users/andri/Documents/GitHub/Homework-2/report.tex" "report.pdf" "report" 1705096760 0
+  "C:/Users/andri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1705096205 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
+  "C:/Users/andri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1700497192 11548 6a0c8c8c9cfa8fbeb540969df0cf428f ""
+  "C:/Users/andri/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1700497189 24213240 e3395fdf1925738d12facdebacace4b7 ""
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcrm1000.tfm" 993062508 1436 c7f957a372ef2fbe93c0982f96625e12 ""
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -43,9 +43,9 @@
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/tex/latex/graphics/trig.sty" 1665067579 4023 293ea1c16429fc0c4cf605f4da1791a9 ""
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1699552361 29988 6d57d2b884f7464419678df319af86d2 ""
   "C:/Users/andri/AppData/Local/Programs/MiKTeX/tex/latex/tools/array.sty" 1698867131 12667 e4b5eb11e4b7239e6c8a52bbe074a6c6 ""
-  "c:/Users/andri/Documents/Università/Machine Learning/Homework-2/report.tex" 1705069845 19951 149c53b2764badf7286c7e9352652fc0 ""
-  "report.aux" 1705069847 3573 cb08d9c131eda8b13bc24608e1f6177d "pdflatex"
-  "report.tex" 1705069845 19951 149c53b2764badf7286c7e9352652fc0 ""
+  "c:/Users/andri/Documents/GitHub/Homework-2/report.tex" 1705096759 21297 ef07c12d981302cb1890d8ad86f3351c ""
+  "report.aux" 1705096760 3705 8eb09041ecf38400a6d9c8816e0ae5ca "pdflatex"
+  "report.tex" 1705096759 21297 ef07c12d981302cb1890d8ad86f3351c ""
   (generated)
   "report.aux"
   "report.log"

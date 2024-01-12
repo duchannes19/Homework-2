@@ -280,26 +280,54 @@ The second CNN model exhibits slight modifications in comparison to the previous
 
 \begin{itemize}
     \item \textbf{Learning Rate Scheduler:} The model employs a learning rate scheduler that reduces the learning rate by 10\% every 10 epochs. This dynamic adjustment can help the model converge more efficiently.
-
 \end{itemize}
+
+\subsubsection{Model Evaluation and Comparison}
+
+The evaluation metrics for the second model, trained with a similar CNN architecture and data augmentation, exhibit this kind of results:
+
+\begin{center}
+    \centering
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+        \hline
+        0 & 0.400 & 0.241 & 0.300 & 133 \\
+        1 & 0.361 & 0.604 & 0.452 & 275 \\
+        2 & 0.484 & 0.724 & 0.580 & 406 \\
+        3 & 0.846 & 0.711 & 0.773 & 1896 \\
+        4 & 0.000 & 0.000 & 0.000 & 39 \\
+        \hline
+        \textbf{Accuracy} & & & 0.670 & 2749 \\
+        \textbf{Macro Avg} & 0.418 & 0.456 & 0.421 & 2749 \\
+        \textbf{Weighted Avg} & 0.711 & 0.670 & 0.679 & 2749 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\newpage
 
 \subsection{Discussion}
 
-Despite the absence of early stopping, the model is trained for 100 epochs. This decision increases the risk of overfitting, and careful monitoring of training and validation metrics is essential to assess the model's generalization performance.
+The second model demonstrates improvements in precision, recall, and F1-score across multiple classes, indicating enhanced classification performance. The macro and weighted averages also suggest an overall better balance in handling the diverse classes.
 \\
 \\
-However this choice is made to see if the model can converge to a better accuracy.
+It's important to note that the absence of improvement in the recall of class 4 may be attributed to the class imbalance or inherent complexities in distinguishing this particular class.
 \\
 \\
-Unfortunately, the model does not converge to a better accuracy, and the accuracy is similar to the previous model.
+With the absence of \emph{Early Stopping}, the model is trained for 100 epochs. This decision increases the risk of overfitting, and careful monitoring of training and validation metrics is essential to assess the model's generalization performance.
+\\
+\\
+However this choice is made to see if the model can converge to a better accuracy if trained for more epochs.
+\\
+\\
+Unfortunately, the model does not converge to a much better accuracy, and it is slightly better but similar to the previous model.
 \\
 \\
 This made me think that perhaps the model is uncapable of learning more, and that the dataset is not big enough to train a more complex model.
 \\
 \\
 Also the performance in the driving simulation is not better than the previous model, and the car still exhibits instability.
-
-\newpage
 
 \section{Other Possible Approach I Tried}
 
@@ -325,8 +353,6 @@ Deep Reinforcement Learning enables the model to make sequential decisions, adap
 \\
 \\
 While DRL introduces additional complexity, it has the potential to significantly enhance the pre-trained model's ability to navigate the CarRacing environment intelligently.
-
-\newpage
 
 \section{Problematics}
 
