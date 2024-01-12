@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.11.20)  12 JAN 2024 11:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.11.20)  12 JAN 2024 15:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -182,103 +182,148 @@ Package caption Info: End \AtBeginDocument code.
  [1
 
 {C:/Users/andri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 27--37
+Underfull \hbox (badness 10000) in paragraph at lines 26--36
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 27--37
+Underfull \hbox (badness 10000) in paragraph at lines 26--36
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 27--37
+Underfull \hbox (badness 10000) in paragraph at lines 26--36
 
  []
 
 
-Overfull \hbox (1.00061pt too wide) in paragraph at lines 27--37
+Overfull \hbox (1.00061pt too wide) in paragraph at lines 26--36
 \OT1/cmr/m/n/10 The clas-si-fi-ca-tion task is sig-nif-i-cant in un-der-stand-ing and pre-dict-ing the decision-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--44
+Underfull \hbox (badness 10000) in paragraph at lines 39--43
 
  []
 
 [1]
-Overfull \hbox (34.25401pt too wide) in paragraph at lines 58--59
+Overfull \hbox (34.25401pt too wide) in paragraph at lines 57--58
 []\OT1/cmr/m/n/10 The aug-mented train-ing data is gen-er-ated in batches us-ing the \OT1/cmtt/m/n/10 flow[]from[]directory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--66
+Underfull \hbox (badness 10000) in paragraph at lines 61--65
 
  []
 
 
-Overfull \hbox (3.6707pt too wide) in paragraph at lines 62--66
+Overfull \hbox (3.6707pt too wide) in paragraph at lines 61--65
 \OT1/cmr/m/n/10 The val-i-da-tion data gen-er-a-tor is cre-ated us-ing the \OT1/cmtt/m/n/10 flow[]from[]directory \OT1/cmr/m/n/10 method,
  []
 
 [2] [3]
-Overfull \hbox (0.25305pt too wide) in paragraph at lines 130--131
+Overfull \hbox (0.25305pt too wide) in paragraph at lines 129--130
 []\OT1/cmtt/m/n/10 train[]generator \OT1/cmr/m/n/10 and \OT1/cmtt/m/n/10 validation[]generator: \OT1/cmr/m/n/10 Data gen-er-a-tors for train-
  []
 
 [4]
-Overfull \hbox (48.74657pt too wide) in paragraph at lines 160--160
+Overfull \hbox (48.74657pt too wide) in paragraph at lines 159--159
 []    \OT1/cmtt/m/n/10 val_steps = validation_generator.n//validation_generator.batch_size + 1[] 
  []
 
 
-Overfull \hbox (69.74638pt too wide) in paragraph at lines 160--160
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 159--159
 []    \OT1/cmtt/m/n/10 loss, acc = model.evaluate_generator(validation_generator, steps=val_steps)[] 
  []
 
 
-Overfull \hbox (4.11346pt too wide) in paragraph at lines 167--168
+Overfull \hbox (4.11346pt too wide) in paragraph at lines 166--167
 \OT1/cmr/m/n/10 val-i-da-tion gen-er-a-tor, con-sid-er-ing the spec-i-fied num-ber of steps (\OT1/cmtt/m/n/10 val[]steps\OT1/cmr/m/n/10 ). 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 188--200
+Underfull \hbox (badness 10000) in paragraph at lines 187--198
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 188--200
+Underfull \hbox (badness 10000) in paragraph at lines 187--198
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 188--200
+Underfull \hbox (badness 10000) in paragraph at lines 187--198
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 207--209
+Underfull \hbox (badness 10000) in paragraph at lines 205--207
 
  []
 
-[6] [7] (report.aux)
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 288--301
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--301
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--301
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--301
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 324--328
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 333--346
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--346
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--346
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--346
+
+ []
+
+[10] (report.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 3521 strings out of 474587
- 60151 string characters out of 5745693
+ 3523 strings out of 474587
+ 60172 string characters out of 5745693
  1933558 words of memory out of 5000000
- 25716 multiletter control sequences out of 15000+600000
- 561844 words of font info for 49 fonts, out of 8000000 for 9000
+ 25717 multiletter control sequences out of 15000+600000
+ 562190 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,6n,77p,515b,194s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (8 pages, 149737 bytes).
+ <C:\Users\andri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/andri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on report.pdf (11 pages, 170949 bytes).
 PDF statistics:
- 79 PDF objects out of 1000 (max. 8388607)
+ 93 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

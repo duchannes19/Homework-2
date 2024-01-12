@@ -19,7 +19,6 @@
     {\Large Andrea Massignan\par}
     {\Large 1796802\par}
     \vfill
-    {\large\today\par}
 \end{titlepage}
 
 \section{Introduction}
@@ -186,17 +185,16 @@ The results of the evaluation are as follows:
 \subsection{Meaning of Results}
 
 The test loss provides a quantitative measure of how well the model performs on the validation dataset.
+A lower loss indicates better performance.
 \\
-A lower loss indicates better performance. In this case, the test loss is 1.120741.
 \\
-\\
-The test accuracy, representing the proportion of correctly classified samples, is 0.654784. This value indicates the percentage of correctly predicted labels among all validation samples.
+The test accuracy, representing the proportion of correctly classified samples. This value indicates the percentage of correctly predicted labels among all validation samples.
 \\
 \\
 Further analysis and potential improvements can be explored based on these results, such as fine-tuning the model architecture, adjusting hyperparameters, or augmenting the dataset.
 \\
 \\
-A step we will try to is by running a second diverse iteration of the CNN.
+We will try to improve by running a second diverse iteration of the CNN.
 
 \section{Classification Report Analysis}
 
@@ -261,5 +259,88 @@ The observed behavior of the car, is described below:
 
 \end{itemize}
 
+\section{Second Iteration of the CNN}
 
+The second CNN model exhibits slight modifications in comparison to the previous model. Key changes include the optimizer, and adjustments in layer parameters.
+
+\begin{itemize}
+    \item \textbf{Optimizer:} The model now utilizes the Adam optimizer with a specified learning rate of 0.001. This optimizer is known for its adaptive learning rate and is widely used in deep learning tasks.
+
+    \item \textbf{Convolutional Layers:} The model retains three convolutional layers (C1, C2, C3), each followed by rectified linear unit (ReLU) activation. Filter sizes and pooling configurations have been adjusted for better feature extraction.
+
+    \item \textbf{Pooling Layers:} Max-pooling layers follow the second and third convolutional layers to reduce spatial dimensions and capture significant features.
+
+    \item \textbf{Dropout Layers:} Two dropout layers (D1, D2) are added after dense layers to prevent overfitting. Each dropout layer randomly drops a fraction of input units during training.
+
+    \item \textbf{Global Average Pooling:} A Global Average Pooling layer is omitted in this model. The previous model included it, but it has been excluded here. Global Average Pooling reduces spatial dimensions and provides a form of spatial regularization.
+
+\end{itemize}
+
+\subsection{Training Setup}
+
+\begin{itemize}
+    \item \textbf{Learning Rate Scheduler:} The model employs a learning rate scheduler that reduces the learning rate by 10\% every 10 epochs. This dynamic adjustment can help the model converge more efficiently.
+
+\end{itemize}
+
+\subsection{Discussion}
+
+Despite the absence of early stopping, the model is trained for 100 epochs. This decision increases the risk of overfitting, and careful monitoring of training and validation metrics is essential to assess the model's generalization performance.
+\\
+\\
+However this choice is made to see if the model can converge to a better accuracy.
+\\
+\\
+Unfortunately, the model does not converge to a better accuracy, and the accuracy is similar to the previous model.
+\\
+\\
+This made me think that perhaps the model is uncapable of learning more, and that the dataset is not big enough to train a more complex model.
+\\
+\\
+Also the performance in the driving simulation is not better than the previous model, and the car still exhibits instability.
+
+\newpage
+
+\section{Other Possible Approach I Tried}
+
+\subsection{Improving the Pre-trained Model with Deep Reinforcement Learning}
+
+To enhance the performance of the pre-trained model, a Deep Reinforcement Learning (DRL) approach can be considered. Utilizing frameworks like Keras-RL or other DRL libraries allows the model to learn optimal actions through interaction with the environment.
+
+\subsection{Keras-RL Integration}
+
+Keras-RL provides seamless integration with Keras models, enabling the application of various DRL algorithms such as Deep Q-Learning (DQN) to our existing model. By incorporating reinforcement learning techniques, the model can learn a policy for controlling the car based on environmental feedback.
+
+\subsection{Training with Gym Environment}
+
+The Gym environment for CarRacing-v2, used previously for supervised learning, can now serve as a training ground for reinforcement learning. The agent explores actions, receives rewards, and learns to maximize cumulative rewards over time.
+
+\subsection{Agent Exploration Strategies}
+
+Implementing exploration strategies, such as epsilon-greedy or softmax, allows the agent to strike a balance between exploiting known actions and exploring new ones. This is crucial for discovering optimal policies.
+
+\subsection{Sequential Decision Making}
+
+Deep Reinforcement Learning enables the model to make sequential decisions, adapting its behavior over time based on feedback from the environment. This iterative learning process can lead to improved performance and robustness.
+\\
+\\
+While DRL introduces additional complexity, it has the potential to significantly enhance the pre-trained model's ability to navigate the CarRacing environment intelligently.
+
+\newpage
+
+\section{Problematics}
+
+Integrating a Deep Reinforcement Learning (DRL) agent with our pre-trained model poses certain challenges. One key issue is the compatibility between the DRL frameworks, like Keras-RL, and the existing neural network model.
+\\
+\\
+In my case I struggled to integrate the Keras-RL library with my model, and I was not able to make it work.
+\\
+\\
+More precicely I couldn't pass the right obs as it was continously reshaping the input in the wrong way:
+\\
+\\
+\emph{(1, 96, 96, 3) was forcefully transformed to (1, 1, 1, 96, 96, 3).}
+\\
+\\
+Thus I wasn't able to make it work, and I had to give up on this approach.
 \end{document}
