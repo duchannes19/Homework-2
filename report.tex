@@ -23,7 +23,7 @@
 
 \section{Introduction}
 
-In this homework assignment, the objective is to address the image classification problem focused on understanding the behavior of a racing car within the OpenAI Gym environment [1]. The task involves classifying 96x96 color images, each corresponding to one of the five distinct actions available for controlling the car.
+In this homework assignment, the objective is to address the image classification problem focused on understanding the behavior of a racing car within the OpenAI Gym environment. The task involves classifying 96x96 color images, each corresponding to one of the five distinct actions available for controlling the car.
 \newline
 \newline
 The provided dataset is segregated into training and test sets, with each image accompanied by a label indicating the specific action associated with the car's control. The dataset structure is organized into folders, where each folder is labeled with the identifier of the corresponding action.
@@ -36,7 +36,7 @@ The classification task is significant in understanding and predicting the decis
 
 \section{Methodology}
 
-The image classification task is addressed using a convolutional neural network (CNN) model. The CNN architecture is implemented using the Keras API [2] with a TensorFlow backend [3]. The model is trained on the labeled training set and evaluated on the separate test set.
+The image classification task is addressed using a convolutional neural network (CNN) model. The CNN architecture is implemented using the Keras API with a TensorFlow backend. The model is trained on the labeled training set and evaluated on the separate test set.
 \newline
 \newline
 Here is how I approached the problem.
@@ -105,7 +105,7 @@ The CNN model is constructed using the Sequential API in Keras, allowing the seq
 
 The model is compiled using the RMSprop optimizer with a learning rate of 0.0001. Categorical crossentropy is chosen as the loss function, as it is suitable for multi-class classification problems. The accuracy metric is used to monitor the model's performance during training.
 
-\section{Training Method with Callbacks}
+\section{Training Method}
 
 In this section, we outline the training methodology used to train the Convolutional Neural Network (CNN) for the racing car behavior classification problem. The training process incorporates specific callbacks to enhance the model's training efficiency and prevent overfitting.
 
@@ -246,7 +246,7 @@ The classification report provides a detailed overview of the performance of a c
 
 \section{Analysis of Car Behavior}
 
-In this section, we analyze the behavior of the car in the provided code that utilizes a trained model to control the car in the CarRacing-v2 environment.
+In this section, we analyze the behavior of the car with the trained model to control the car in the CarRacing-v2 environment.
 
 \subsection{Observations}
 
@@ -271,8 +271,6 @@ The second CNN model exhibits slight modifications in comparison to the previous
     \item \textbf{Pooling Layers:} Max-pooling layers follow the second and third convolutional layers to reduce spatial dimensions and capture significant features.
 
     \item \textbf{Dropout Layers:} Two dropout layers (D1, D2) are added after dense layers to prevent overfitting. Each dropout layer randomly drops a fraction of input units during training.
-
-    \item \textbf{Global Average Pooling:} A Global Average Pooling layer is omitted in this model. The previous model included it, but it has been excluded here. Global Average Pooling reduces spatial dimensions and provides a form of spatial regularization.
 
 \end{itemize}
 
@@ -327,7 +325,7 @@ Unfortunately, the model does not converge to a much better accuracy, and it is 
 This made me think that perhaps the model is uncapable of learning more, and that the dataset is not big enough to train a more complex model.
 \\
 \\
-Also the performance in the driving simulation is not better than the previous model, and the car still exhibits instability.
+Also the performance in the driving simulation is not better than the previous model, and the car still exhibits instability, even if the scores are higher, the first model behaves better.
 
 \section{Other Possible Approach I Tried}
 
