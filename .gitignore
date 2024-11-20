@@ -2,3 +2,10 @@ data
 test
 train
 video_recordings/
+models/
+report/*.aux
+report/*.log
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+video_recordings/*.mp4
