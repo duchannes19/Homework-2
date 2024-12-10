@@ -3,6 +3,7 @@ test
 train
 video_recordings/
 models/
+reinforcement_learning/
 report/*.aux
 report/*.log
 report/*.fls
