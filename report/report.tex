@@ -4,6 +4,10 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{array}
+\usepackage[margin=1.0in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{float}
 
 \begin{document}
 
@@ -19,6 +23,7 @@
     {\Large Andrea Massignan\par}
     {\Large 1796802\par}
     \vfill
+    \href{https://github.com/duchannes19/Homework-2}{GitHub Repository}
 \end{titlepage}
 
 \section{Introduction}
@@ -34,11 +39,11 @@ Here is how I approached the problem.
 
 \section{Data Preprocessing}
 
-In this section, we describe the data preprocessing steps implemented for training a Convolutional Neural Network (CNN) to classify images in the context of a self-driving car simulation. The preprocessing pipeline ensures that the data is appropriately formatted and augmented for robust training while maintaining consistency for validation.
+In this section, I describe the data preprocessing steps implemented for training a Convolutional Neural Network (CNN) to classify images in the context of a self-driving car simulation. The preprocessing pipeline makes so that the data is appropriately formatted and augmented for robust training while maintaining consistency for validation.
 \\\\
 The dataset was split into a training set and a validation set, each set contains images organized into subdirectories corresponding to their respective classes.
 \\\\
-To handle the variability in image sizes and ensure compatibility with the CNN architecture, all images were resized to a target size of \(96 \times 96\) pixels. The images were loaded in RGB format, which preserves the color information essential for classification. The batch size was set to 64 for efficient processing and gradient updates during training.
+To handle the variability in image sizes and ensure compatibility with the CNN architecture, all images were resized to a target size of \(96 \times 96\) pixels. The images were loaded in RGB format, which preserves the color information for classification. The batch size was set to 64.
 
 \subsection{Training Data Augmentation}
 
@@ -54,8 +59,6 @@ To enhance the generalizability of the model, data augmentation was applied to t
     \item \textbf{Fill Mode}: When augmentations resulted in empty areas, pixels were filled using the nearest pixel values.
 \end{itemize}
 
-These augmentations ensure that the model learns robust features by exposing it to a wider range of image variations.
-
 \subsection{Validation Data Processing}
 
 For the validation set, data augmentation was intentionally omitted to preserve the original data distribution and provide an unbiased evaluation of the model's performance. The images in this set were rescaled to the range [0, 1].
@@ -70,7 +73,7 @@ The training and validation data were loaded using generators, which allow for e
 
 \subsection{Dataset Overview}
 
-The preprocessing pipeline yielded the following insights into the dataset:
+The preprocessing pipeline gave the following insights into the dataset:
 \begin{itemize}
     \item Input images have a shape of \(96 \times 96 \times 3\), where the dimensions correspond to height, width, and color channels, respectively.
     \item The training set comprises \texttt{train\_generator.n} samples distributed across \texttt{train\_generator.num\_classes} classes.
@@ -80,13 +83,13 @@ The preprocessing pipeline yielded the following insights into the dataset:
 
 \section{Class Distribution Analysis}
 
-To better understand the distribution of samples across different classes in the training dataset, we performed an analysis of the class distribution. Uneven distribution of samples among classes, often referred to as class imbalance, can negatively affect the training process, leading to biased predictions. This analysis helps identify potential imbalances that may require corrective measures.
-
+To better understand the distribution of samples across different classes in the training dataset, I performed an analysis of the class distribution. Uneven distribution of samples among classes, often referred to as class imbalance, can negatively affect the training process, leading to biased predictions. This analysis helps identify potential imbalances that may require corrective measures.
+\\\\
 The number of samples per class was computed using the \texttt{train\_generator.classes} attribute, which provides the class labels for all images in the training set. The class names were retrieved from the generator's \texttt{class\_indices} attribute. A bar plot was generated to visualize the distribution.
 
 \subsection{Visualization of Class Distribution}
 
-Figure~\ref{fig:class_distribution} displays the class distribution in the training set. Each bar corresponds to a class, and its height represents the number of samples available for that class. The visualization was created using \texttt{matplotlib} with the following steps:
+The figure in the next page displays the class distribution in the training set. Each bar corresponds to a class, and its height represents the number of samples available for that class. The visualization was created using \texttt{matplotlib} with the following steps:
 
 \begin{itemize}
     \item The total count of samples per class was calculated by summing the occurrences of each class label.
@@ -118,20 +121,13 @@ This distribution indicates an imbalance in the dataset, with Class 4 being part
 
 \subsection{Creating Separate Generators for Minority Classes}
 
-To address the observed class imbalance in the dataset, we implemented a strategy to augment the minority classes separately. This approach focuses on increasing the representation of the underrepresented classes in the training data, ensuring that the model learns their features more effectively.
+To address the observed class imbalance in the dataset, I implemented a strategy to augment the minority classes separately. This approach focuses on increasing the representation of the underrepresented classes in the training data, and this is done by re-applying the augmentation techniques to the images in these classes. The goal is to balance the class distribution and improve the model's ability to generalize across all classes.
 
 \subsubsection{Target Classes and Data Augmentation}
 
-The classes identified as minority classes in the dataset were \textbf{Class 0} and \textbf{Class 4}. Separate data generators were created for these classes using the following augmentation techniques:
-\begin{itemize}
-    \item \textbf{Rescaling}: Normalizing pixel values to the range [0, 1].
-    \item \textbf{Zooming}: Applying random zooms up to 20\% to simulate changes in scale.
-    \item \textbf{Shifting}: Introducing random horizontal and vertical shifts up to 20\%.
-    \item \textbf{Flipping}: Randomly flipping images horizontally.
-    \item \textbf{Rotation}: Random rotations up to 30 degrees.
-    \item \textbf{Shearing}: Applying shear transformations up to 20\%.
-    \item \textbf{Fill Mode}: Filling any empty areas created during transformations using the nearest pixel values.
-\end{itemize}
+The classes identified as minority classes in the dataset were \textbf{Class 0} and \textbf{Class 4}.
+\\\\
+The augmentation techniques applied to the minority classes included \textbf{normalizing} pixel values to the range [0, 1], applying random \textbf{zooms} up to 20\% to simulate changes in scale, introducing random \textbf{horizontal and vertical shifts} up to 20\%, randomly \textbf{flipping} images horizontally, performing random \textbf{rotations} up to 30 degrees, applying \textbf{shear transformations} up to 20\%, and filling any empty areas created during transformations using the \textbf{nearest pixel values}.
 
 \subsubsection{Implementation}
 
@@ -139,11 +135,7 @@ Separate generators were created for the minority classes using the \texttt{Imag
 
 \subsubsection{Outcome}
 
-For each minority class, a generator was successfully created, provided that the class directory existed in the training dataset. If a directory was not found, the process skipped that class with a notification. In total, the number of augmented generators created was:
-\\\\
-\textbf{Number of augmented generators:} \texttt{len(augmented\_generators)}
-\\\\
-This targeted augmentation strategy helps to alleviate class imbalance by increasing the effective sample size of the underrepresented classes, thereby improving the robustness of the model.
+For each minority class, a generator was successfully created, provided that the class directory existed in the training dataset. If a directory was not found, the process skipped that class with a notification.
 
 \subsection{Computing Class Weights}
 
@@ -164,14 +156,14 @@ The class weights were calculated using the \texttt{class\_weight.compute\_class
 \subsubsection{Results}
 
 The computed class weights were:
-\begin{verbatim}
-Class Weights: \texttt{class\_weights\_dict}
-\end{verbatim}
+\\\\
+\textbf{Class Weights:} \texttt{class\_weights\_dict}
+\\\\
 These weights assign higher values to underrepresented classes (e.g., Class 4), while overrepresented classes (e.g., Class 3) receive lower weights. 
 
 \subsubsection{Significance}
 
-By incorporating class weights during model training, the loss function will penalize misclassifications of underrepresented classes more heavily. This adjustment helps to improve the model's performance on minority classes without artificially modifying the dataset or oversampling.
+By incorporating class weights during model training, the loss function will penalize misclassifications of underrepresented classes more heavily. This adjustment should help to improve the model's performance on minority classes without artificially modifying the dataset or oversampling.
 \\\\
 In this case specifically, the class weights are the following:
 
@@ -203,7 +195,7 @@ The combined generator should offer:
 
 \section{Model Definition}
 
-In this section, we define two Convolutional Neural Network (CNN) architectures, thought for the image classification task: \texttt{DeepCNN} and \texttt{ImprovedDeepCNN}. Both models leverage multiple convolutional blocks to extract hierarchical features from input images, followed by dense layers for classification. These architectures differ in their complexity, optimization strategies, and regularization techniques.
+In this section, I define two Convolutional Neural Network (CNN) architectures, thought for the image classification task: a \texttt{First CNN} and a \texttt{Second CNN}. Both models leverage multiple convolutional blocks to extract hierarchical features from input images, followed by dense layers for classification. These architectures differ in their complexity, optimization strategies, and regularization techniques.
 
 \subsection{First CNN Architecture}
 
@@ -347,6 +339,8 @@ The detailed classification reports for each model, which provide precision, rec
     \label{tab:combined_cnn_metrics}
 \end{table}
 
+\newpage
+
 \subsubsection{Observations}
 
 \begin{itemize}
@@ -357,7 +351,7 @@ The detailed classification reports for each model, which provide precision, rec
 
 \subsection{Model Deployment in Gymnasium Environment}
 
-The best-performing model was deployed in the \texttt{CarRacing-v3} environment from Gymnasium. The goal was to control the car using the model's predictions, mapping the classification outputs to predefined continuous actions.
+The best-performing model was deployed in the \texttt{CarRacing-v3} environment from Gymnasium. The goal was to control the car using the model's predictions, mapping the classification outputs to predefined continuous actions, even though it was an optional task.
 
 \subsubsection{Environment Setup}
 
@@ -381,5 +375,57 @@ The car was controlled using the following approach:
 
 \noindent
 The interaction with the environment was recorded as a video for further analysis and demonstration purposes.
+
+\subsection{Results}
+
+Alas, the model was not able to control the car effectively in the Gymnasium environment. The car often veered off the track or failed to navigate turns, indicating a lack of robustness in the model's predictions. The performance was inconsistent, with occasional successes but frequent failures in controlling the car effectively. I'm afraid this is due to the overfitting, which even if mitigated by the ensemble model, was still present in the final model, due to the lack of data and the class imbalance.
+
+\section{Reinforcement Learning Approach}
+
+An optional component of this project involved implementing a reinforcement learning (RL) approach to solve the \texttt{CarRacing-v3} task using a Deep Q-Network (DQN) agent. This approach was designed to train a neural network to autonomously control the car by interacting with the environment and learning from its actions. However, due to hardware limitations and the extensive training time required, this component was not completed to its full extent.
+
+\subsection{Overview of the Reinforcement Learning Approach}
+
+The RL implementation followed a classical DQN architecture with the following elements:
+\begin{itemize}
+    \item \textbf{Deep Q-Network (DQN):} A convolutional neural network that predicts Q-values for a set of predefined continuous actions.
+    \item \textbf{Action Space:} A set of continuous steering, gas, and brake actions was defined for controlling the car.
+    \item \textbf{Replay Memory:} A memory buffer to store past experiences, which were replayed during training to stabilize learning.
+    \item \textbf{Target Model Updates:} A secondary target model was used to stabilize training by providing consistent Q-value estimates.
+\end{itemize}
+
+\subsection{Implementation Details}
+
+The implementation included utility functions for preprocessing frames, seeding randomness, and saving results, along with a configuration class to manage hyperparameters. The training loop leveraged a reward system to guide the agent's learning and included mechanisms to skip frames for efficiency. A test function was also defined to evaluate a trained model in a live environment.
+
+\subsection{Challenges and Limitations}
+
+The following challenges were encountered during the implementation:
+\begin{itemize}
+    \item \textbf{Hardware Constraints:} The training process requires significant computational resources due to the large state space and the need for extensive interactions with the environment.
+    \item \textbf{Training Time:} DQN training is time-intensive, and achieving convergence would require a lot of time of uninterrupted computation.
+    \item \textbf{Incomplete Execution:} Due to the aforementioned constraints, the RL approach was implemented but not fully executed to produce conclusive results.
+\end{itemize}
+
+\subsection{Inspired by Autonomous Networking Course}
+
+This approach was inspired by an example presented during the \textit{Autonomous Networking} course last year. It was demonstrated the application of reinforcement learning for autonomous control tasks, which provided a foundation and inspiration for the design of this RL agent.
+
+\subsection{Future Work}
+
+With access to better hardware resources and more time, the following enhancements can be pursued:
+\begin{itemize}
+    \item Full training and testing of the DQN agent to validate its performance in the \texttt{CarRacing-v3} environment.
+    \item Exploration of advanced RL algorithms, such as Double DQN.
+    \item Integration of domain-specific reward shaping to better guide the agent's learning process.
+\end{itemize}
+
+\section{Conclusion}
+
+In this project, I addressed the image classification task for a self-driving car in the OpenAI Gym environment using convolutional neural networks. I implemented two CNN architectures, the \texttt{First CNN} and \texttt{Second CNN}, and combined them to create an ensemble model. The combined model achieved the highest validation accuracy of 71.59\%, outperforming the individual models. 
+\\\\
+However, the model's performance in the Gymnasium environment was suboptimal, indicating the need for further improvements to enhance robustness and generalization. 
+\\\\
+The reinforcement learning approach using a DQN agent was partially implemented but not fully executed due to hardware constraints and training time limitations. Future work could focus on completing the RL implementation and exploring advanced algorithms to improve the agent's performance.
 
 \end{document}
