@@ -24,347 +24,362 @@
 \section{Introduction}
 
 In this homework assignment, the objective is to address the image classification problem focused on understanding the behavior of a racing car within the OpenAI Gym environment. The task involves classifying 96x96 color images, each corresponding to one of the five distinct actions available for controlling the car.
-\newline
-\newline
-The provided dataset is segregated into training and test sets, with each image accompanied by a label indicating the specific action associated with the car's control. The dataset structure is organized into folders, where each folder is labeled with the identifier of the corresponding action.
-\newline
-\newline
-The primary goal of this assignment is to develop an image classification model capable of accurately predicting the action taken by the racing car based on the visual input. This entails training a model on the labeled training set and evaluating its performance on the separate test set.
-\newline
-\newline
-The classification task is significant in understanding and predicting the decision-making process of an autonomous agent navigating a simulated racing environment. Effective solutions to this problem can have applications in various domains, such as autonomous vehicle control and reinforcement learning.
 
 \section{Methodology}
 
-The image classification task is addressed using a convolutional neural network (CNN) model. The CNN architecture is implemented using the Keras API with a TensorFlow backend. The model is trained on the labeled training set and evaluated on the separate test set.
+The image classification task is addressed using convolutional neural network (CNN) models. The CNN architecture is implemented using the Keras API with a TensorFlow backend. The models are trained on the labeled training set and evaluated on the separate test set.
 \newline
 \newline
 Here is how I approached the problem.
 
 \section{Data Preprocessing}
 
-For the training set, data augmentation is performed to increase the model's robustness and improve its generalization capabilities. The ImageDataGenerator is configured with the following augmentation parameters:
+In this section, we describe the data preprocessing steps implemented for training a Convolutional Neural Network (CNN) to classify images in the context of a self-driving car simulation. The preprocessing pipeline ensures that the data is appropriately formatted and augmented for robust training while maintaining consistency for validation.
+\\\\
+The dataset was split into a training set and a validation set, each set contains images organized into subdirectories corresponding to their respective classes.
+\\\\
+To handle the variability in image sizes and ensure compatibility with the CNN architecture, all images were resized to a target size of \(96 \times 96\) pixels. The images were loaded in RGB format, which preserves the color information essential for classification. The batch size was set to 64 for efficient processing and gradient updates during training.
+
+\subsection{Training Data Augmentation}
+
+To enhance the generalizability of the model, data augmentation was applied to the training set using the \texttt{ImageDataGenerator} class from Keras. Augmentation techniques included:
 
 \begin{itemize}
-    \item \textbf{Rescaling:} Normalizes pixel values to the range [0, 1] by dividing each pixel value by 255.
-    \item \textbf{Zoom Range:} Randomly applies zooming with a range of 0.1 to introduce variations in image scale.
-    \item \textbf{Width Shift Range:} Randomly shifts the width of the image by a fraction of 0.1 to introduce horizontal variations.
-    \item \textbf{Height Shift Range:} Randomly shifts the height of the image by a fraction of 0.1 to introduce vertical variations.
-    \item \textbf{Horizontal Flip:} Randomly flips images horizontally to diversify training samples.
-    \item \textbf{Vertical Flip:} No vertical flipping is applied to maintain the orientation of the racing car images.
+    \item \textbf{Rescaling}: All pixel values were normalized to the range [0, 1] by dividing by 255.
+    \item \textbf{Zooming}: A random zoom range of 10\% was applied to simulate variations in image scale.
+    \item \textbf{Shifting}: Random shifts up to 10\% in both width and height directions were introduced.
+    \item \textbf{Horizontal Flipping}: Random horizontal flips were applied to account for variations in vehicle orientation.
+    \item \textbf{Rotation}: Images were randomly rotated within a range of 20 degrees.
+    \item \textbf{Shearing}: Shear transformations with a range of 10\% were used to modify the image perspective slightly.
+    \item \textbf{Fill Mode}: When augmentations resulted in empty areas, pixels were filled using the nearest pixel values.
 \end{itemize}
 
-The augmented training data is generated in batches using the \texttt{flow\_from\_directory} method of the ImageDataGenerator. The generator is configured to read images from the 'trainingset' directory, resize them to a target size of (96, 96), use RGB color mode, generate batches of size 64, apply one-hot encoding for categorical labels, shuffle the data, and consider it as part of the training subset.
+These augmentations ensure that the model learns robust features by exposing it to a wider range of image variations.
 
-\subsection{Validation Data Preprocessing}
+\subsection{Validation Data Processing}
 
-For the validation set, no data augmentation is applied to maintain the integrity of the original images. The ImageDataGenerator for validation is configured only with rescaling, ensuring consistency with the preprocessing applied during training.
-\newline
-\newline
-The validation data generator is created using the \texttt{flow\_from\_directory} method, reading images from the 'validationset' directory, resizing them to (96, 96), and generating batches of size 64. The validation data is not shuffled, and class mode is set to 'categorical' for compatibility with the model.
+For the validation set, data augmentation was intentionally omitted to preserve the original data distribution and provide an unbiased evaluation of the model's performance. The images in this set were rescaled to the range [0, 1].
 
-\subsection{Dataset Information}
+\subsection{Data Generators}
 
-After configuring the generators, relevant information about the dataset is extracted, including the number of training samples, number of classes, and the input shape of the images. The class names are obtained from the generator's class indices. The extracted information is printed to the console for reference.
+The training and validation data were loaded using generators, which allow for efficient batch processing:
+\begin{itemize}
+    \item \texttt{train\_generator}: Reads the augmented training images and their corresponding labels in batches.
+    \item \texttt{validation\_generator}: Loads validation images without augmentation for consistent evaluation.
+\end{itemize}
 
-\section{Convolutional Neural Network (CNN) Architecture}
+\subsection{Dataset Overview}
 
-In this section, we present the architecture of the Convolutional Neural Network (CNN) designed for the image classification problem in the context of racing car behavior. The CNN model is implemented using Keras, consisting of multiple convolutional and dense layers to capture hierarchical features from the input images.
+The preprocessing pipeline yielded the following insights into the dataset:
+\begin{itemize}
+    \item Input images have a shape of \(96 \times 96 \times 3\), where the dimensions correspond to height, width, and color channels, respectively.
+    \item The training set comprises \texttt{train\_generator.n} samples distributed across \texttt{train\_generator.num\_classes} classes.
+    \item The validation set consists of \texttt{validation\_generator.n} samples spanning the same number of classes as the training set.
+    \item The class names, derived from the directory structure, \\ are: \texttt{train\_generator.class\_indices.keys()}.
+\end{itemize}
 
-\subsection{Model Architecture}
+\section{Class Distribution Analysis}
 
-The CNN model is constructed using the Sequential API in Keras, allowing the sequential stacking of layers. Let's break down each layer of the model:
+To better understand the distribution of samples across different classes in the training dataset, we performed an analysis of the class distribution. Uneven distribution of samples among classes, often referred to as class imbalance, can negatively affect the training process, leading to biased predictions. This analysis helps identify potential imbalances that may require corrective measures.
 
-\begin{enumerate}
-    \item \textbf{C1 Convolutional Layer:} \\
-          The first convolutional layer consists of 15 filters with a kernel size of (4, 4). Rectified Linear Unit (ReLU) activation function is applied to introduce non-linearity. This layer processes the input image to capture low-level features.
+The number of samples per class was computed using the \texttt{train\_generator.classes} attribute, which provides the class labels for all images in the training set. The class names were retrieved from the generator's \texttt{class\_indices} attribute. A bar plot was generated to visualize the distribution.
 
-    \item \textbf{C2 Convolutional Layer:} \\
-          The second convolutional layer comprises 20 filters with a kernel size of (4, 4). ReLU activation is applied, followed by a max-pooling layer with a pool size of (2, 2). This layer further extracts hierarchical features and reduces spatial dimensions through pooling.
+\subsection{Visualization of Class Distribution}
 
-    \item \textbf{C3 Convolutional Layer:} \\
-          The third convolutional layer includes 30 filters with a kernel size of (4, 4). ReLU activation is applied, followed by another max-pooling layer. This layer captures higher-level features and reduces spatial dimensions.
-
-    \item \textbf{Flatten Layer:} \\
-          The flatten layer transforms the 3D tensor output from the convolutional layers into a 1D tensor, preparing it for the subsequent dense layers.
-
-    \item \textbf{D1 Dense Layer:} \\
-          The first dense layer consists of 128 neurons with ReLU activation. A dropout layer with a rate of 0.4 is introduced to prevent overfitting.
-
-    \item \textbf{D2 Dense Layer:} \\
-          The second dense layer comprises 96 neurons with ReLU activation. Another dropout layer with a rate of 0.4 is added.
-
-    \item \textbf{Output Layer:} \\
-          The output layer has neurons equal to the number of classes, with softmax activation to produce class probabilities.
-          \\
-          This layer is responsible for predicting the action label.
-
-\end{enumerate}
-
-\subsection{Model Compilation}
-
-The model is compiled using the RMSprop optimizer with a learning rate of 0.0001. Categorical crossentropy is chosen as the loss function, as it is suitable for multi-class classification problems. The accuracy metric is used to monitor the model's performance during training.
-
-\section{Training Method}
-
-In this section, we outline the training methodology used to train the Convolutional Neural Network (CNN) for the racing car behavior classification problem. The training process incorporates specific callbacks to enhance the model's training efficiency and prevent overfitting.
-
-\subsection{Callback Definitions}
-
-Two crucial callbacks are employed during the training process:
-
-\begin{enumerate}
-    \item \textbf{Early Stopping Callback:} \\
-          The \texttt{EarlyStopping} callback is configured to monitor the validation loss (\texttt{val\_loss}). If there is no improvement in validation loss for a consecutive number of epochs (patience), training is terminated early to prevent overfitting. The \texttt{restore\_best\_weights} parameter ensures that the model is restored to its best weights.
-
-    \item \textbf{Reduce Learning Rate on Plateau Callback:} \\
-          The \texttt{ReduceLROnPlateau} callback dynamically adjusts the learning rate during training. It monitors the validation loss and reduces the learning rate (\texttt{factor=0.2}) if there is no improvement for a certain number of epochs (patience). The minimum learning rate is set to \(1 \times 10^{-6}\).
-\end{enumerate}
-
-\subsection{Training Configuration}
-
-The training process is executed within a \texttt{try-except} block to handle potential interruptions. The model is trained using the \texttt{fit} method, with the following parameters:
+Figure~\ref{fig:class_distribution} displays the class distribution in the training set. Each bar corresponds to a class, and its height represents the number of samples available for that class. The visualization was created using \texttt{matplotlib} with the following steps:
 
 \begin{itemize}
-    \item \texttt{train\_generator} and \texttt{validation\_generator:} Data generators for training and validation datasets, respectively.
-
-    \item \texttt{epochs=50:} The total number of training epochs.
-
-    \item \texttt{steps\_per\_epoch:} The number of steps (batches) to process from the training generator in one epoch.
-
-    \item \texttt{validation\_data:} Validation generator for evaluating the model's performance during training.
-
-    \item \texttt{validation\_steps:} The number of steps (batches) to process from the validation generator in one epoch.
-
-    \item \texttt{callbacks:} A list containing the defined callbacks (\texttt{early\_stopping} and \texttt{reduce\_lr}).
+    \item The total count of samples per class was calculated by summing the occurrences of each class label.
+    \item A bar chart was plotted, where the x-axis represents the class names, and the y-axis represents the number of samples.
 \end{itemize}
 
-\subsection{Handling Interrupts}
-
-The \texttt{except KeyboardInterrupt} block handles potential manual interruptions, allowing for a graceful termination of the training process.
-
-\section{Evaluation and Results Analysis}
-
-In this section, we discuss the evaluation of the trained Convolutional Neural Network (CNN) model and analyze the obtained results.
-
-\subsection{Evaluation Code}
-
-The following code is responsible for evaluating the model on the validation dataset:
-
-\begin{verbatim}
-    val_steps = validation_generator.n//validation_generator.batch_size + 1
-    loss, acc = model.evaluate_generator(validation_generator, steps=val_steps)
-    print('Test loss: %f' % loss)
-    print('Test accuracy: %f' % acc)
-\end{verbatim}
-
-\begin{itemize}
-    \item \texttt{val\_steps:} The variable is calculated to determine the number of steps (batches) needed to cover the entire validation dataset. It ensures that all data is considered during evaluation.
-
-    \item \texttt{loss, acc:} These variables store the computed loss and accuracy values, respectively, during the evaluation.
-
-    \item \texttt{model.evaluate\_generator:} This method evaluates the model on the validation generator, considering the specified number of steps (\texttt{val\_steps}).
-
-    \item \texttt{print('Test loss: \%f' \% loss):} Outputs the computed test loss.
-
-    \item \texttt{print('Test accuracy: \%f' \% acc):} Outputs the computed test accuracy.
-
-\end{itemize}
-
-\subsection{Results Analysis}
-
-The results of the evaluation are as follows:
-
-\begin{itemize}
-    \item \texttt{Test loss:} The computed loss on the validation dataset is 1.120741.
-
-    \item \texttt{Test accuracy:} The computed accuracy on the validation dataset is 0.654784.
-
-\end{itemize}
-
-\subsection{Meaning of Results}
-
-The test loss provides a quantitative measure of how well the model performs on the validation dataset.
-A lower loss indicates better performance.
-\\
-\\
-The test accuracy, representing the proportion of correctly classified samples. This value indicates the percentage of correctly predicted labels among all validation samples.
-\\
-\\
-Further analysis and potential improvements can be explored based on these results, such as fine-tuning the model architecture, adjusting hyperparameters, or augmenting the dataset.
-\\
-\\
-We will try to improve by running a second diverse iteration of the CNN.
-
-\section{Classification Report Analysis}
-
-In this section, we analyze the results of a classification report obtained from a model evaluation.
-
-\subsection{Classification Report}
-
-The following is the classification report:
-\\
-\begin{center}
-\centering
-\begin{tabular}{lcccccc}
-\hline
-& precision & recall & f1-score & support \\
-\hline
-0 & 0.500 & 0.075 & 0.131 & 53 \\
-1 & 0.287 & 0.509 & 0.367 & 110 \\
-2 & 0.417 & 0.512 & 0.460 & 162 \\
-3 & 0.810 & 0.736 & 0.771 & 758 \\
-4 & 0.000 & 0.000 & 0.000 & 15 \\
-\hline
-accuracy & - & - & 0.638 & 1098 \\
-macro avg & 0.403 & 0.367 & 0.346 & 1098 \\
-weighted avg & 0.674 & 0.638 & 0.643 & 1098 \\
-\hline
-\end{tabular}
-\end{center}
-
-\subsection{Interpretation}
-
-The classification report provides a detailed overview of the performance of a classification model across different classes. Here is the interpretation of key metrics:
-
-\begin{itemize}
-    \item \texttt{precision:} Precision is the ratio of correctly predicted positive observations to the total predicted positives. It is highest for class 3 (0.810), indicating a high proportion of correctly predicted positive samples.
-
-    \item \texttt{recall:} Recall, or sensitivity, is the ratio of correctly predicted positive observations to the all observations in actual class. Class 3 also has the highest recall (0.736), indicating the model captures a significant portion of actual positive samples for this class.
-
-    \item \texttt{f1-score:} The F1-score is the weighted average of precision and recall. It is particularly useful when the class distribution is imbalanced. Class 3 has the highest F1-score (0.771), reflecting a balance between precision and recall.
-
-    \item \texttt{support:} Support is the number of actual occurrences of the class in the specified dataset. Class 3 has the highest support (758), indicating a relatively large number of samples for this class.
-
-    \item \texttt{accuracy:} Accuracy is the ratio of correctly predicted observations to the total observations. The overall accuracy is 0.638.
-
-    \item \texttt{macro avg:} Macro-averaging computes the metric independently for each class and then takes the average. The macro-averaged precision, recall, and F1-score are 0.403, 0.367, and 0.346, respectively.
-
-    \item \texttt{weighted avg:} Weighted averaging computes the metric for each class and then takes the weighted average based on the support. The weighted-averaged precision, recall, and F1-score are 0.674, 0.638, and 0.643, respectively.
-
-\end{itemize}
-
-\section{Analysis of Car Behavior}
-
-In this section, we analyze the behavior of the car with the trained model to control the car in the CarRacing-v2 environment.
-
-\subsection{Observations}
-
-The observed behavior of the car, is described below:
-
-\begin{itemize}
-    \item \textbf{Stability:} The car exhibits a certain degree of stability, as it manages to stay on the right track for the majority of the simulation.
-
-    \item \textbf{Unstable Moments:} Despite overall semi-stability, there are instances where the car exhibits some instability. As sometimes it gets outside of the track, or spins to get back on the correct path.
-
-\end{itemize}
-
-\section{Second Iteration of the CNN}
-
-The second CNN model exhibits slight modifications in comparison to the previous model. Key changes include the optimizer, and adjustments in layer parameters.
-
-\begin{itemize}
-    \item \textbf{Optimizer:} The model now utilizes the Adam optimizer with a specified learning rate of 0.001. This optimizer is known for its adaptive learning rate and is widely used in deep learning tasks.
-
-    \item \textbf{Convolutional Layers:} The model retains three convolutional layers (C1, C2, C3), each followed by rectified linear unit (ReLU) activation. Filter sizes and pooling configurations have been adjusted for better feature extraction.
-
-    \item \textbf{Pooling Layers:} Max-pooling layers follow the second and third convolutional layers to reduce spatial dimensions and capture significant features.
-
-    \item \textbf{Dropout Layers:} Two dropout layers (D1, D2) are added after dense layers to prevent overfitting. Each dropout layer randomly drops a fraction of input units during training.
-
-\end{itemize}
-
-\subsection{Training Setup}
-
-\begin{itemize}
-    \item \textbf{Learning Rate Scheduler:} The model employs a learning rate scheduler that reduces the learning rate by 10\% every 10 epochs. This dynamic adjustment can help the model converge more efficiently.
-\end{itemize}
-
-\subsubsection{Model Evaluation and Comparison}
-
-The evaluation metrics for the second model, trained with a similar CNN architecture and data augmentation, exhibit this kind of results:
-
-\begin{center}
+\begin{figure}[h!]
     \centering
-    \begin{tabular}{lcccccc}
-        \hline
-        \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
-        \hline
-        0 & 0.400 & 0.241 & 0.300 & 133 \\
-        1 & 0.361 & 0.604 & 0.452 & 275 \\
-        2 & 0.484 & 0.724 & 0.580 & 406 \\
-        3 & 0.846 & 0.711 & 0.773 & 1896 \\
-        4 & 0.000 & 0.000 & 0.000 & 39 \\
-        \hline
-        \textbf{Accuracy} & & & 0.670 & 2749 \\
-        \textbf{Macro Avg} & 0.418 & 0.456 & 0.421 & 2749 \\
-        \textbf{Weighted Avg} & 0.711 & 0.670 & 0.679 & 2749 \\
-        \hline
-    \end{tabular}
-\end{center}
+    \includegraphics[width=0.8\textwidth]{class_distribution.png}
+    \caption{Class distribution in the training set.}
+    \label{fig:class_distribution}
+\end{figure}
 
 \newpage
 
-\subsection{Discussion}
+\subsection{Observations}
 
-The second model demonstrates improvements in precision, recall, and F1-score across multiple classes, indicating enhanced classification performance. The macro and weighted averages also suggest an overall better balance in handling the diverse classes.
-\\
-\\
-It's important to note that the absence of improvement in the recall of class 4 may be attributed to the class imbalance or inherent complexities in distinguishing this particular class.
-\\
-\\
-With the absence of \emph{Early Stopping}, the model is trained for 100 epochs. This decision increases the risk of overfitting, and careful monitoring of training and validation metrics is essential to assess the model's generalization performance.
-\\
-\\
-However this choice is made to see if the model can converge to a better accuracy if trained for more epochs.
-\\
-\\
-Unfortunately, the model does not converge to a much better accuracy, and it is slightly better but similar to the previous model.
-\\
-\\
-This made me think that perhaps the model is uncapable of learning more, and that the dataset is not big enough to train a more complex model.
-\\
-\\
-Also the performance in the driving simulation is not better than the previous model, and the car still exhibits instability, even if the scores are higher, the first model behaves better.
+The class distribution in the training dataset, as depicted in Figure~\ref{fig:class_distribution}, reveals variability in the representation of different classes:
 
-\section{Other Possible Approach I Tried}
+\begin{itemize}
+    \item \textbf{Class 3} is the most represented, with approximately 2000 samples.
+    \item \textbf{Classes 1 and 2} are moderately represented, each containing around 1500 samples.
+    \item \textbf{Class 0} has fewer samples, with just above 1000 samples.
+    \item \textbf{Class 4} is significantly underrepresented, containing fewer than 500 samples.
+\end{itemize}
 
-\subsection{Improving the Pre-trained Model with Deep Reinforcement Learning}
+\noindent
+This distribution indicates an imbalance in the dataset, with Class 4 being particularly underrepresented and Class 3 dominating the dataset. Such imbalances may lead to biased model performance, favoring overrepresented classes and leading to overfitting
 
-To enhance the performance of the pre-trained model, a Deep Reinforcement Learning (DRL) approach can be considered. Utilizing frameworks like Keras-RL or other DRL libraries allows the model to learn optimal actions through interaction with the environment.
+\subsection{Creating Separate Generators for Minority Classes}
 
-\subsection{Keras-RL Integration}
+To address the observed class imbalance in the dataset, we implemented a strategy to augment the minority classes separately. This approach focuses on increasing the representation of the underrepresented classes in the training data, ensuring that the model learns their features more effectively.
 
-Keras-RL provides seamless integration with Keras models, enabling the application of various DRL algorithms such as Deep Q-Learning (DQN) to our existing model. By incorporating reinforcement learning techniques, the model can learn a policy for controlling the car based on environmental feedback.
+\subsubsection{Target Classes and Data Augmentation}
 
-\subsection{Training with Gym Environment}
+The classes identified as minority classes in the dataset were \textbf{Class 0} and \textbf{Class 4}. Separate data generators were created for these classes using the following augmentation techniques:
+\begin{itemize}
+    \item \textbf{Rescaling}: Normalizing pixel values to the range [0, 1].
+    \item \textbf{Zooming}: Applying random zooms up to 20\% to simulate changes in scale.
+    \item \textbf{Shifting}: Introducing random horizontal and vertical shifts up to 20\%.
+    \item \textbf{Flipping}: Randomly flipping images horizontally.
+    \item \textbf{Rotation}: Random rotations up to 30 degrees.
+    \item \textbf{Shearing}: Applying shear transformations up to 20\%.
+    \item \textbf{Fill Mode}: Filling any empty areas created during transformations using the nearest pixel values.
+\end{itemize}
 
-The Gym environment for CarRacing-v2, used previously for supervised learning, can now serve as a training ground for reinforcement learning. The agent explores actions, receives rewards, and learns to maximize cumulative rewards over time.
+\subsubsection{Implementation}
 
-\subsection{Agent Exploration Strategies}
+Separate generators were created for the minority classes using the \texttt{ImageDataGenerator} class, targeting their respective directories within the training dataset. Only the directories corresponding to the minority classes (\texttt{Class 0} and \texttt{Class 4}) were processed. Each generator was configured to shuffle the data and output augmented samples in batches of 64 images, resized to \(96 \times 96\) pixels.
 
-Implementing exploration strategies, such as epsilon-greedy or softmax, allows the agent to strike a balance between exploiting known actions and exploring new ones. This is crucial for discovering optimal policies.
+\subsubsection{Outcome}
 
-\subsection{Sequential Decision Making}
+For each minority class, a generator was successfully created, provided that the class directory existed in the training dataset. If a directory was not found, the process skipped that class with a notification. In total, the number of augmented generators created was:
+\\\\
+\textbf{Number of augmented generators:} \texttt{len(augmented\_generators)}
+\\\\
+This targeted augmentation strategy helps to alleviate class imbalance by increasing the effective sample size of the underrepresented classes, thereby improving the robustness of the model.
 
-Deep Reinforcement Learning enables the model to make sequential decisions, adapting its behavior over time based on feedback from the environment. This iterative learning process can lead to improved performance and robustness.
-\\
-\\
-While DRL introduces additional complexity, it has the potential to significantly enhance the pre-trained model's ability to navigate the CarRacing environment intelligently.
+\subsection{Computing Class Weights}
 
-\section{Problematics}
+To further address the issue of class imbalance in the training dataset, class weights were computed. Class weights help the model prioritize learning from underrepresented classes by assigning higher importance to their corresponding loss during training. This ensures that the model does not become biased toward overrepresented classes.
 
-Integrating a Deep Reinforcement Learning (DRL) agent with our pre-trained model poses certain challenges. One key issue is the compatibility between the DRL frameworks, like Keras-RL, and the existing neural network model.
-\\
-\\
-In my case I struggled to integrate the Keras-RL library with my model, and I was not able to make it work.
-\\
-\\
-More precicely I couldn't pass the right obs as it was continously reshaping the input in the wrong way:
-\\
-\\
-\emph{(1, 96, 96, 3) was forcefully transformed to (1, 1, 1, 96, 96, 3).}
-\\
-\\
-Thus I wasn't able to make it work, and I had to give up on this approach.
+\subsubsection{Methodology}
+
+The class weights were calculated using the \texttt{class\_weight.compute\_class\_weight} function from \texttt{sklearn.utils}. This function computes the weights inversely proportional to the frequency of each class, ensuring that all classes are equally considered during training. The computation steps are as follows:
+\begin{itemize}
+    \item The unique class labels were extracted from \texttt{train\_generator.classes}.
+    \item The class weights were calculated using the formula:
+    \[
+    \text{weight}_{i} = \frac{\text{total samples}}{\text{number of classes} \times \text{samples in class}_{i}}
+    \]
+    \item The weights were converted into a dictionary for easy integration during model training.
+\end{itemize}
+
+\subsubsection{Results}
+
+The computed class weights were:
+\begin{verbatim}
+Class Weights: \texttt{class\_weights\_dict}
+\end{verbatim}
+These weights assign higher values to underrepresented classes (e.g., Class 4), while overrepresented classes (e.g., Class 3) receive lower weights. 
+
+\subsubsection{Significance}
+
+By incorporating class weights during model training, the loss function will penalize misclassifications of underrepresented classes more heavily. This adjustment helps to improve the model's performance on minority classes without artificially modifying the dataset or oversampling.
+\\\\
+In this case specifically, the class weights are the following:
+
+\begin{verbatim}
+Class Weights: {0: 1.2738, 1: 0.8492, 2: 0.8492, 3: 0.6369, 4: 3.4520}
+\end{verbatim}
+
+\subsection{Combining Original and Augmented Generators}
+
+To ensure a comprehensive dataset for training, the original training generator was combined with the augmented generators created for the minority classes. This approach effectively merges the balanced representation from the augmentation process with the natural variability of the original dataset, improving the overall robustness of the model.
+
+\subsubsection{Methodology}
+
+The combination was implemented using the \texttt{itertools.chain} function, which allows for the seamless concatenation of multiple generators. The following steps were performed:
+\begin{itemize}
+    \item The original training generator (\texttt{train\_generator}) was combined with the augmented generators created for the minority classes.
+    \item A wrapper generator function, \texttt{combined\_generator}, was defined to yield data batches from the combined generator.
+    \item The iterator for the combined generator was reset to ensure a clean start during training.
+\end{itemize}
+
+\subsubsection{Advantages}
+
+The combined generator should offer:
+\begin{itemize}
+    \item \textbf{Increased Diversity}: Combines naturally occurring samples with augmented samples, providing more diverse training data.
+    \item \textbf{Class Balance}: Includes additional samples for minority classes, mitigating class imbalance.
+    \item \textbf{Seamless Integration}: Maintains the batch-wise data flow required for efficient training in deep learning frameworks.
+\end{itemize}
+
+\section{Model Definition}
+
+In this section, we define two Convolutional Neural Network (CNN) architectures, thought for the image classification task: \texttt{DeepCNN} and \texttt{ImprovedDeepCNN}. Both models leverage multiple convolutional blocks to extract hierarchical features from input images, followed by dense layers for classification. These architectures differ in their complexity, optimization strategies, and regularization techniques.
+
+\subsection{First CNN Architecture}
+
+The \texttt{First CNN} model is a sequential architecture consisting of three convolutional blocks, each followed by pooling and dropout layers to reduce overfitting. The key components are as follows:
+\begin{itemize}
+    \item \textbf{First Convolutional Block:} Includes two convolutional layers with 32 filters of size \(3 \times 3\) and ReLU activation, followed by max pooling (\(2 \times 2\)) and dropout (30\%).
+    \item \textbf{Second Convolutional Block:} Contains two convolutional layers with 64 filters of size \(3 \times 3\) and ReLU activation, followed by max pooling and dropout (30\%).
+    \item \textbf{Third Convolutional Block:} Comprises two convolutional layers with 128 filters of size \(3 \times 3\) and ReLU activation, followed by max pooling and dropout (40\%).
+    \item \textbf{Dense Layers:} A fully connected layer with 512 units and ReLU activation is followed by a 50\% dropout layer. The output layer uses a softmax activation to classify the images into the desired number of classes.
+\end{itemize}
+
+The model is compiled with the RMSprop optimizer and a learning rate of 0.001, employing categorical cross-entropy as the loss function. This architecture serves as a strong baseline for the task.
+
+\subsection{Second CNN Architecture}
+
+The \texttt{Second CNN} model builds on the \texttt{First CNN} architecture by incorporating several enhancements aimed at improving performance:
+\begin{itemize}
+    \item \textbf{Batch Normalization:} Added after each convolutional layer to stabilize learning and accelerate convergence.
+    \item \textbf{Leaky ReLU Activation:} Replaces the standard ReLU activation, allowing for small gradients even for negative inputs, which prevents neuron "dying."
+    \item \textbf{Global Average Pooling:} Used instead of flattening after the convolutional blocks, reducing the risk of overfitting by minimizing the number of parameters.
+    \item \textbf{Kernel Regularization:} A regularization term (\(L2\)) is applied to the dense layer to further mitigate overfitting.
+    \item \textbf{Adam Optimizer:} A more advanced optimization algorithm with a learning rate of 0.0001, offering adaptive learning rates for better convergence.
+\end{itemize}
+
+The architecture retains three convolutional blocks but augments each with the additional features described above. Dropout is applied at various points to introduce regularization.
+
+\section{Model Training}
+
+The training phase involves optimizing the \texttt{First CNN} and \texttt{Second CNN} models using the preprocessed dataset and the combined generators. This section outlines the training strategy, including the use of callbacks for dynamic learning rate adjustment, early stopping, and model checkpointing.
+
+\subsection{Callbacks}
+
+To monitor and enhance the training process, three key callbacks were employed:
+\begin{itemize}
+    \item \textbf{Early Stopping:} This callback monitors the validation loss and stops training if there is no improvement for 10 consecutive epochs. Additionally, it restores the model weights corresponding to the best validation performance to prevent overfitting.
+    \item \textbf{ReduceLROnPlateau:} This callback reduces the learning rate by a factor of 0.2 if the validation loss does not improve for 3 consecutive epochs, ensuring gradual convergence.
+    \item \textbf{Model Checkpoint:} The best model, based on validation accuracy, is saved to a file (\texttt{models/best\_model.keras}) during training. This ensures the best performing model is preserved even if training is interrupted.
+\end{itemize}
+
+\subsection{Training Configuration}
+
+The training process was configured with the following parameters:
+\begin{itemize}
+    \item \textbf{Epochs:} Both models were trained for up to 100 epochs, with early stopping enabled to terminate training when no further improvement is observed.
+    \item \textbf{Steps Per Epoch:} Calculated as the total number of samples in the training set divided by the batch size, rounded up to ensure all samples are utilized.
+    \item \textbf{Validation Steps:} Similarly, computed for the validation set.
+    \item \textbf{Class Weights:} The previously computed class weights were applied to emphasize learning from underrepresented classes.
+\end{itemize}
+
+If the training process was interrupted manually (e.g., via a keyboard interrupt), the models were saved at their current state to avoid loss of progress.
+
+\subsection{Model Saving}
+
+Upon completion of the training, the final versions of both models were saved to disk for future use:
+\begin{itemize}
+    \item \textbf{First CNN:} Saved as \texttt{models/final\_model\_deep.keras}.
+    \item \textbf{Second CNN:} Saved as \texttt{models/final\_model\_improved.keras}.
+\end{itemize}
+
+\section{Creating and Evaluating the Combined Model}
+
+To leverage the strengths of both the \texttt{First CNN} and \texttt{Second CNN} architectures, a combined model was created by averaging the predictions of the two individual models.
+
+\subsection{Architecture of the Combined Model}
+
+The combined model was constructed as follows:
+\begin{itemize}
+    \item \textbf{Input Layer:} A single input layer was defined with the shape matching the input dimensions of both \texttt{First CNN} and \texttt{Second CNN}. To ensure compatibility, the input shapes of the two models were verified to be identical.
+    \item \textbf{Predictions from Individual Models:} The predictions from both \texttt{First CNN} and \texttt{Second CNN} were obtained by passing the input layer through each pre-trained model.
+    \item \textbf{Averaging Layer:} The outputs of the two models were combined using an averaging layer, which computes the element-wise mean of the predictions. This ensemble strategy smooths out individual model errors and improves robustness.
+    \item \textbf{Output Layer:} The averaged predictions serve as the final output of the combined model, representing the probabilities for each class.
+\end{itemize}
+
+\subsection{Compilation and Saving}
+
+The combined model was compiled with the following configuration:
+\begin{itemize}
+    \item \textbf{Loss Function:} Categorical cross-entropy was used as the loss function, consistent with the individual models.
+    \item \textbf{Optimizer:} The Adam optimizer with a learning rate of 0.0001 was selected for its adaptive learning capabilities.
+    \item \textbf{Metrics:} Accuracy was used as the primary evaluation metric.
+\end{itemize}
+
+\subsection{Model Evaluation Summary}
+
+The results, including the loss, accuracy, and classification metrics, are summarized here:
+
+\subsubsection{Validation Metrics}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Model} & \textbf{Loss} & \textbf{Accuracy} \\
+        \hline
+        First CNN & 1.3909 & 0.6162 \\
+        Second CNN & 1.3409 & 0.6744 \\
+        Combined CNN & 1.3079 & 0.7159 \\
+        \hline
+    \end{tabular}
+    \caption{Validation Loss and Accuracy for All Models}
+    \label{tab:validation_metrics_summary}
+\end{table}
+
+\subsubsection{Classification Reports}
+
+The detailed classification reports for each model, which provide precision, recall, F1-score, and support for all classes, are presented in the following tables.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=0.45\textwidth]{DeepCNN.png} &
+        \includegraphics[width=0.45\textwidth]{deep_cnn_cf.png} \\
+        \multicolumn{1}{c}{\textbf{Classification Report}} &
+        \multicolumn{1}{c}{\textbf{Confusion Matrix}} \\
+    \end{tabular}
+    \caption{Evaluation Metrics for the First CNN}
+    \label{tab:deep_cnn_metrics}
+\end{table}
+\vspace{1cm}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=0.45\textwidth]{ImprovedCNN.png} &
+        \includegraphics[width=0.45\textwidth]{improved_cnn_cf.png} \\
+        \multicolumn{1}{c}{\textbf{Classification Report}} &
+        \multicolumn{1}{c}{\textbf{Confusion Matrix}} \\
+    \end{tabular}
+    \caption{Evaluation Metrics for Second CNN}
+    \label{tab:improved_cnn_metrics}
+\end{table}
+\vspace{1cm}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=0.45\textwidth]{CombinedCNN.png} &
+        \includegraphics[width=0.45\textwidth]{combined_cnn_cf.png} \\
+        \multicolumn{1}{c}{\textbf{Classification Report}} &
+        \multicolumn{1}{c}{\textbf{Confusion Matrix}} \\
+    \end{tabular}
+    \caption{Evaluation Metrics for the Combined CNN}
+    \label{tab:combined_cnn_metrics}
+\end{table}
+
+\subsubsection{Observations}
+
+\begin{itemize}
+    \item The \textbf{First CNN} achieved the lowest accuracy (61.62\%) and the highest loss (1.3909), indicating its comparatively limited capacity to generalize on the validation set.
+    \item The \textbf{Second CNN} outperformed the \texttt{First CNN}, achieving an accuracy of 67.44\% and a slightly lower loss of 1.3409, highlighting the benefits of batch normalization, Leaky ReLU, and regularization techniques.
+    \item The \textbf{Combined Model} achieved the highest validation accuracy of 71.59\%, with the lowest loss of 1.3079, demonstrating its effectiveness in leveraging the strengths of both \texttt{First CNN} and \texttt{Second CNN}.
+\end{itemize}
+
+\subsection{Model Deployment in Gymnasium Environment}
+
+The best-performing model was deployed in the \texttt{CarRacing-v3} environment from Gymnasium. The goal was to control the car using the model's predictions, mapping the classification outputs to predefined continuous actions.
+
+\subsubsection{Environment Setup}
+
+The environment was initialized with the following parameters:
+\begin{itemize}
+    \item \textbf{Domain Randomization:} Disabled to maintain consistent environmental conditions.
+    \item \textbf{Render Mode:} Set to \texttt{rgb\_array} to enable observation rendering.
+\end{itemize}
+
+\subsubsection{Predefined Actions}
+A set of continuous actions was predefined to control the car based on the model's predictions. These actions include no action, steering left, steering right, accelerating, and braking.
+
+\subsubsection{Performance in the Environment}
+
+The car was controlled using the following approach:
+\begin{itemize}
+    \item Observations from the environment were preprocessed and fed into the trained model.
+    \item The model's predicted class was mapped to a corresponding predefined action.
+    \item The environment was stepped with the selected action until the episode terminated.
+\end{itemize}
+
+\noindent
+The interaction with the environment was recorded as a video for further analysis and demonstration purposes.
+
 \end{document}
