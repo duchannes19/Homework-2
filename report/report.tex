@@ -73,7 +73,7 @@ The training and validation data were loaded using generators, which allow for e
 
 \subsection{Dataset Overview}
 
-The preprocessing pipeline gave the following insights into the dataset:
+The preprocessing pipeline gave this insights into the dataset:
 \begin{itemize}
     \item Input images have a shape of \(96 \times 96 \times 3\), where the dimensions correspond to height, width, and color channels, respectively.
     \item The training set comprises \texttt{train\_generator.n} samples distributed across \texttt{train\_generator.num\_classes} classes.
@@ -89,7 +89,7 @@ The number of samples per class was computed using the \texttt{train\_generator.
 
 \subsection{Visualization of Class Distribution}
 
-The figure in the next page displays the class distribution in the training set. Each bar corresponds to a class, and its height represents the number of samples available for that class. The visualization was created using \texttt{matplotlib} with the following steps:
+The figure in the next page displays the class distribution in the training set. Each bar corresponds to a class, and its height represents the number of samples available for that class. The visualization was created using \texttt{matplotlib} this way:
 
 \begin{itemize}
     \item The total count of samples per class was calculated by summing the occurrences of each class label.
@@ -177,7 +177,7 @@ To ensure a comprehensive dataset for training, the original training generator 
 
 \subsubsection{Methodology}
 
-The combination was implemented using the \texttt{itertools.chain} function, which allows for the seamless concatenation of multiple generators. The following steps were performed:
+The combination was implemented using the \texttt{itertools.chain} function, which allows for the seamless concatenation of multiple generators. These steps were performed:
 \begin{itemize}
     \item The original training generator (\texttt{train\_generator}) was combined with the augmented generators created for the minority classes.
     \item A wrapper generator function, \texttt{combined\_generator}, was defined to yield data batches from the combined generator.
@@ -237,7 +237,7 @@ To monitor and enhance the training process, three key callbacks were employed:
 
 \subsection{Training Configuration}
 
-The training process was configured with the following parameters:
+The training process was configured with this parameters:
 \begin{itemize}
     \item \textbf{Epochs:} Both models were trained for up to 100 epochs, with early stopping enabled to terminate training when no further improvement is observed.
     \item \textbf{Steps Per Epoch:} Calculated as the total number of samples in the training set divided by the batch size, rounded up to ensure all samples are utilized.
@@ -271,7 +271,7 @@ The combined model was constructed as follows:
 
 \subsection{Compilation and Saving}
 
-The combined model was compiled with the following configuration:
+The combined model was compiled with this configuration:
 \begin{itemize}
     \item \textbf{Loss Function:} Categorical cross-entropy was used as the loss function, consistent with the individual models.
     \item \textbf{Optimizer:} The Adam optimizer with a learning rate of 0.0001 was selected for its adaptive learning capabilities.
@@ -355,7 +355,7 @@ The best-performing model was deployed in the \texttt{CarRacing-v3} environment 
 
 \subsubsection{Environment Setup}
 
-The environment was initialized with the following parameters:
+The environment was initialized using this parameters:
 \begin{itemize}
     \item \textbf{Domain Randomization:} Disabled to maintain consistent environmental conditions.
     \item \textbf{Render Mode:} Set to \texttt{rgb\_array} to enable observation rendering.
@@ -366,7 +366,7 @@ A set of continuous actions was predefined to control the car based on the model
 
 \subsubsection{Performance in the Environment}
 
-The car was controlled using the following approach:
+The car was controlled using this approach:
 \begin{itemize}
     \item Observations from the environment were preprocessed and fed into the trained model.
     \item The model's predicted class was mapped to a corresponding predefined action.
@@ -400,7 +400,7 @@ The implementation included utility functions for preprocessing frames, seeding 
 
 \subsection{Challenges and Limitations}
 
-The following challenges were encountered during the implementation:
+These were the challenges that were encountered during the implementation:
 \begin{itemize}
     \item \textbf{Hardware Constraints:} The training process requires significant computational resources due to the large state space and the need for extensive interactions with the environment.
     \item \textbf{Training Time:} DQN training is time-intensive, and achieving convergence would require a lot of time of uninterrupted computation.
@@ -413,7 +413,7 @@ This approach was inspired by an example presented during the \textit{Autonomous
 
 \subsection{Future Work}
 
-With access to better hardware resources and more time, the following enhancements can be pursued:
+With access to better hardware resources and more time, we could improve the implementation, for example:
 \begin{itemize}
     \item Full training and testing of the DQN agent to validate its performance in the \texttt{CarRacing-v3} environment.
     \item Exploration of advanced RL algorithms, such as Double DQN.
